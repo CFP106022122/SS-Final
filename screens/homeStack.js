@@ -18,7 +18,6 @@ class HomeStack extends React.Component {
   }
   render() {
     const { coursesNames } = this.props;
-
     return (
       <Stack.Navigator>
         <Stack.Screen

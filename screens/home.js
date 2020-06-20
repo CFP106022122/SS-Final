@@ -11,6 +11,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
+import axios from "axios";
 
 class Home extends React.Component {
   constructor(props) {
@@ -18,6 +19,15 @@ class Home extends React.Component {
   }
 
   render() {
+    axios
+      .get(
+        "https://lms.nthu.edu.tw/sys/lib/ajax/login_submit.php?account=106022122&password=46011014&ssl=1&stay=1"
+      )
+      .then(
+        axios
+          .get("https://lms.nthu.edu.tw/home.php")
+          .then((res) => console.log(res))
+      );
     const { coursesNames, navigation } = this.props;
     return (
       <View style={globalStyles.container}>
