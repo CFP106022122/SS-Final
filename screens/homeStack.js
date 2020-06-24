@@ -10,14 +10,21 @@ import CurriculumScreen from "./curriculum";
 import CalendarScreen from "./calendar";
 import Header from "../shared/header";
 
+import { getCoursesList } from "../states/home-action";
+
 const Stack = createStackNavigator();
 
 class HomeStack extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    getCoursesList();
+  }
+
   render() {
-    const { coursesNames } = this.props;
+    const { courseList, navigation } = this.props;
+    const coursesNames = courseList.map((item) => item.name);
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -38,5 +45,5 @@ class HomeStack extends React.Component {
 }
 
 export default connect((state) => ({
-  coursesNames: state.coursesNames.coursesNames,
+  courseList: state.home.courseList,
 }))(HomeStack);

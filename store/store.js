@@ -1,11 +1,10 @@
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 
-import { coursesNames, announcements } from "../states/reducers";
+import { home } from "../states/home-reducer";
 
 const appReducer = {
-  coursesNames,
-  announcements,
+  home,
 };
 
 export const store = createStore(

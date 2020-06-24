@@ -11,24 +11,22 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
-import axios from "axios";
+
+import { getCoursesList } from "../states/home-action";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.dispatch(getCoursesList());
+  }
+
   render() {
-    axios
-      .get(
-        "https://lms.nthu.edu.tw/sys/lib/ajax/login_submit.php?account=106022122&password=46011014&ssl=1&stay=1"
-      )
-      .then(
-        axios
-          .get("https://lms.nthu.edu.tw/home.php")
-          .then((res) => console.log(res))
-      );
-    const { coursesNames, navigation } = this.props;
+    const { courseList, navigation } = this.props;
+    const coursesNames = courseList.map((item) => item.name);
+
     return (
       <View style={globalStyles.container}>
         <FlatList
@@ -124,5 +122,5 @@ const styles = StyleSheet.create({
 });
 
 export default connect((state) => ({
-  coursesNames: state.coursesNames.coursesNames,
+  courseList: state.home.courseList,
 }))(Home);
