@@ -18,9 +18,9 @@ class AnnouncementHomeScreen extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.props.dispatch(getAnnouncementList(this.props.courseID));
-  }
+  // componentDidMount() {
+  //   this.props.dispatch(getAnnouncementList(this.props.courseID));
+  // }
 
   render() {
     const { announcementList, navigation } = this.props;

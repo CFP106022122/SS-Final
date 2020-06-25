@@ -19,9 +19,9 @@ class Home extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.props.dispatch(getCourseList());
-  }
+  // componentDidMount() {
+  //   this.props.dispatch(getCourseList());
+  // }
 
   render() {
     const { courseList, navigation } = this.props;

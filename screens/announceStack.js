@@ -7,27 +7,32 @@ import { connect } from "react-redux";
 import AnnouncementDetails from "./announceDetails";
 import AnnouncementHomeScreen from "./announceHome";
 
-const Stack = createStackNavigator();
+import { getAnnouncementList } from "../states/announce-action";
+
+const announcementStack = createStackNavigator();
 
 class AnnouncementStack extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentWillMount() {
+    this.props.dispatch(getAnnouncementList(this.props.courseID));
+  }
   render() {
     const { announcementList, courseID } = this.props;
+    // console.log(announcementList);
     return (
-      <Stack.Navigator>
-        <Stack.Screen
+      <announcementStack.Navigator>
+        <announcementStack.Screen
           name="AnnouncementHome"
           options={{
             headerShown: false,
           }}
         >
           {(props) => <AnnouncementHomeScreen {...props} courseID={courseID} />}
-        </Stack.Screen>
-
+        </announcementStack.Screen>
         {announcementList.map((announcement) => (
-          <Stack.Screen
+          <announcementStack.Screen
             name={announcement.title}
             options={{
               headerShown: false,
@@ -40,9 +45,9 @@ class AnnouncementStack extends React.Component {
                 newsID={announcement.id}
               />
             )}
-          </Stack.Screen>
+          </announcementStack.Screen>
         ))}
-      </Stack.Navigator>
+      </announcementStack.Navigator>
     );
   }
 }

@@ -10,11 +10,16 @@ import CurriculumScreen from "./curriculum";
 import CalendarScreen from "./calendar";
 import Header from "../shared/header";
 
+import { getCourseList } from "../states/home-action";
+
 const Stack = createStackNavigator();
 
 class HomeStack extends React.Component {
   constructor(props) {
     super(props);
+  }
+  componentWillMount() {
+    this.props.dispatch(getCourseList());
   }
 
   render() {
