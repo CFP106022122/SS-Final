@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { connect } from "react-redux";
 
-import AnnouncementDetailsScreen from "./announceDetails";
+import AnnouncementDetails from "./announceDetails";
 import AnnouncementHomeScreen from "./announceHome";
 
 const Stack = createStackNavigator();
@@ -14,8 +14,7 @@ class AnnouncementStack extends React.Component {
     super(props);
   }
   render() {
-    const { announcements } = this.props;
-    const titles = announcements.map((announcement) => announcement.title);
+    const { announcementList, courseID } = this.props;
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -24,10 +23,10 @@ class AnnouncementStack extends React.Component {
             headerShown: false,
           }}
         >
-          {(props) => <AnnouncementHomeScreen {...props} titles={titles} />}
+          {(props) => <AnnouncementHomeScreen {...props} courseID={courseID} />}
         </Stack.Screen>
 
-        {announcements.map((announcement) => (
+        {announcementList.map((announcement) => (
           <Stack.Screen
             name={announcement.title}
             options={{
@@ -35,9 +34,10 @@ class AnnouncementStack extends React.Component {
             }}
           >
             {(props) => (
-              <AnnouncementDetailsScreen
+              <AnnouncementDetails
                 {...props}
-                details={announcement.details}
+                courseID={courseID}
+                newsID={announcement.id}
               />
             )}
           </Stack.Screen>
@@ -48,5 +48,5 @@ class AnnouncementStack extends React.Component {
 }
 
 export default connect((state) => ({
-  announcements: state.announcements.announcements,
+  announcementList: state.announcementList.announcementList,
 }))(AnnouncementStack);

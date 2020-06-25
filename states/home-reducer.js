@@ -4,7 +4,7 @@ const initHomeState = {
 
 export function home(state = initHomeState, action) {
   switch (action.type) {
-    case "@HOME/SetCouresList":
+    case "@HOME/SetCourseList":
       return {
         ...state,
         courseList: action.courseList,

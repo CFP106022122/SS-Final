@@ -12,7 +12,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 
-import { getCoursesList } from "../states/home-action";
+import { getCourseList } from "../states/home-action";
 
 class Home extends React.Component {
   constructor(props) {
@@ -20,7 +20,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getCoursesList());
+    this.props.dispatch(getCourseList());
   }
 
   render() {
@@ -33,7 +33,11 @@ class Home extends React.Component {
           data={coursesNames}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onPress={() => navigation.navigate(`${item}`)}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate(item);
+                }}
+              >
                 <Card>
                   <Text style={globalStyles.titleText}>{item}</Text>
                 </Card>

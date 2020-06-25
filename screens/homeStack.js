@@ -10,21 +10,15 @@ import CurriculumScreen from "./curriculum";
 import CalendarScreen from "./calendar";
 import Header from "../shared/header";
 
-import { getCoursesList } from "../states/home-action";
-
 const Stack = createStackNavigator();
 
 class HomeStack extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    getCoursesList();
-  }
 
   render() {
-    const { courseList, navigation } = this.props;
-    const coursesNames = courseList.map((item) => item.name);
+    const { courseList } = this.props;
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -34,9 +28,13 @@ class HomeStack extends React.Component {
             headerTitle: () => <Header title="NTHUer" />,
           }}
         />
-        {coursesNames.map((courseName) => (
-          <Stack.Screen name={courseName} component={CourseScreen} />
-        ))}
+        {courseList.map((course) => {
+          return (
+            <Stack.Screen name={course.name}>
+              {(props) => <CourseScreen {...props} courseID={course.id} />}
+            </Stack.Screen>
+          );
+        })}
         <Stack.Screen name="Curriculum" component={CurriculumScreen} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
       </Stack.Navigator>

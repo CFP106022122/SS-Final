@@ -1,16 +1,15 @@
-import { parseCourseList as getCouresListFromApi } from "../api/parser";
-import course from "../screens/course";
+import { parseCourseList as getCourseListFromApi } from "../api/parser";
 
-function setCourseList(couresLsit) {
+function setCourseList(courseList) {
   return {
-    type: "@HOME/SetCouresList",
-    courseList: couresLsit,
+    type: "@HOME/SetCourseList",
+    courseList: courseList,
   };
 }
 
-export function getCoursesList() {
+export function getCourseList() {
   return (dispatch, getState) => {
-    getCouresListFromApi()
+    getCourseListFromApi()
       .then((courseList) => {
         dispatch(setCourseList(courseList));
       })

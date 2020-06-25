@@ -4,7 +4,6 @@ import login from "./login";
 let isLogin = false;
 
 export default function get(url) {
-  console.log(isLogin);
   if (!isLogin) {
     login()
       .then((res) => {

@@ -10,29 +10,42 @@ import {
 import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 
-export default class AnnouncementHomeScreen extends React.Component {
+import { getAnnouncementList } from "../states/announce-action";
+import { connect } from "react-redux";
+
+class AnnouncementHomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.dispatch(getAnnouncementList(this.props.courseID));
+  }
+
   render() {
-    const { titles, navigation } = this.props;
+    const { announcementList, navigation } = this.props;
     return (
       <View style={globalStyles.container}>
         <FlatList
-          data={titles}
+          data={announcementList}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity onPress={() => navigation.navigate(`${item}`)}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(`${item.title}`)}
+              >
                 <Card>
-                  <Text style={globalStyles.titleText}>{item}</Text>
+                  <Text style={globalStyles.titleText}>{item.title}</Text>
                 </Card>
               </TouchableOpacity>
             );
           }}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.title}
         />
       </View>
     );
   }
 }
+
+export default connect((state) => ({
+  announcementList: state.announcementList.announcementList,
+}))(AnnouncementHomeScreen);
