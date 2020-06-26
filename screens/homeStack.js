@@ -11,7 +11,7 @@ import CalendarScreen from "./calendar";
 import Header from "../shared/header";
 
 import { getCourseList } from "../states/home-action";
-
+import Wait from "../shared/wait";
 const Stack = createStackNavigator();
 
 class HomeStack extends React.Component {
@@ -23,33 +23,38 @@ class HomeStack extends React.Component {
   }
 
   render() {
-    const { courseList } = this.props;
-    return (
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            headerTitle: () => <Header title="NTHUer" />,
-          }}
-        />
-        {courseList.map((course) => {
-          return (
-            <Stack.Screen
-              name={course.name}
-              key={course.id}
-              initialParams={{ courseID: course.id }}
-              component={CourseScreen}
-            />
-          );
-        })}
-        <Stack.Screen name="Curriculum" component={CurriculumScreen} />
-        <Stack.Screen name="Calendar" component={CalendarScreen} />
-      </Stack.Navigator>
-    );
+    const { courseList, isLoading } = this.props;
+    let children = <Wait />;
+    if (!isLoading && courseList.length) {
+      children = (
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              headerTitle: () => <Header title="NTHUer" />,
+            }}
+          />
+          {courseList.map((course) => {
+            return (
+              <Stack.Screen
+                name={course.name}
+                key={course.id}
+                initialParams={{ courseID: course.id }}
+                component={CourseScreen}
+              />
+            );
+          })}
+          <Stack.Screen name="Curriculum" component={CurriculumScreen} />
+          <Stack.Screen name="Calendar" component={CalendarScreen} />
+        </Stack.Navigator>
+      );
+    }
+    return children;
   }
 }
 
 export default connect((state) => ({
   courseList: state.home.courseList,
+  isLoading: state.home.isLoading,
 }))(HomeStack);

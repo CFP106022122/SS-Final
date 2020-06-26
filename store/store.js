@@ -7,10 +7,14 @@ import {
   announcementDetail,
 } from "../states/announce-reducer";
 
+import { materialList, materialDetail } from "../states/material-reducer";
+
 const appReducer = {
   home,
   announcementList,
   announcementDetail,
+  materialList,
+  materialDetail,
 };
 
 export const store = createStore(

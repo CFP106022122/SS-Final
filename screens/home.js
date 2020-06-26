@@ -18,14 +18,8 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  // componentDidMount() {
-  //   this.props.dispatch(getCourseList());
-  // }
-
   render() {
     const { courseList, navigation } = this.props;
-
     return (
       <View style={globalStyles.container}>
         <FlatList

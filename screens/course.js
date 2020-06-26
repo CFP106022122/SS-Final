@@ -23,7 +23,11 @@ class Course extends React.Component {
           component={AnnouncementStackScreen}
           initialParams={{ courseID: courseID }}
         />
-        <Tab.Screen name="Material" component={MaterialStackScreen} />
+        <Tab.Screen
+          name="Material"
+          component={MaterialStackScreen}
+          initialParams={{ courseID: courseID }}
+        />
         <Tab.Screen name="Homework" component={HomeworkStackScreen} />
         <Tab.Screen name="Grade" component={GradeStackScreen} />
         <Tab.Screen name="Forum" component={ForumStackScreen} />
