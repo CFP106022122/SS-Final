@@ -33,26 +33,27 @@ export function parseAnnouncementList(courseID) {
       const pages = items.length ? items.length - 2 + 1 : 1;
       return pages;
     })
-    .catch((err) => console.error(err))
     .then((pages) => {
-      let announcementList = [];
-      let index = 0;
       let urls = [];
       for (let page = 1; page <= pages; page++) {
         let url = `${baseUrl}/course.php?courseID=${courseID}&f=news&page=${page}`;
         urls.push(parseAnnouncementListHelper(url));
       }
-      Promise.all(urls)
+      return urls;
+    })
+    .then((urls) => {
+      let announcementList = [];
+      let index = 0;
+      return Promise.all(urls)
         .then((results) => {
           for (let i = 0; i < results.length; ++i) {
             for (let j = 0; j < results[i].length; ++j) {
               announcementList[index++] = results[i][j];
             }
           }
+          return announcementList;
         })
         .catch((err) => console.error(err));
-
-      return announcementList;
     })
     .catch((err) => console.error(err));
 }

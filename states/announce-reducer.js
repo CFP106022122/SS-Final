@@ -2,7 +2,7 @@ import { exp } from "react-native-reanimated";
 
 const initAnnouncementListState = {
   announcementList: [],
-  announcementListDone: false,
+  isLoading: false,
 };
 export function announcementList(state = initAnnouncementListState, action) {
   switch (action.type) {
@@ -11,15 +11,15 @@ export function announcementList(state = initAnnouncementListState, action) {
         ...state,
         announcementList: action.announcementList,
       };
-    case "@announcementList/SetAnnouncementDone":
+    case "@announcementList/StartLoading":
       return {
         ...state,
-        announcementListDone: action.announcementListDone,
+        isLoading: true,
       };
-    case "@announcementList/StartAnnouncement":
+    case "@announcementList/EndLoading":
       return {
         ...state,
-        announcementListDone: action.announcementListDone,
+        isLoading: false,
       };
 
     default:
@@ -29,6 +29,7 @@ export function announcementList(state = initAnnouncementListState, action) {
 
 const initAnnouncementDetailState = {
   announcementDetail: [],
+  isLoading: false,
 };
 
 export function announcementDetail(
@@ -40,6 +41,16 @@ export function announcementDetail(
       return {
         ...state,
         announcementDetail: action.announcementDetail,
+      };
+    case "@announcementDetail/StartLoading":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "@announcementDetail/EndLoading":
+      return {
+        ...state,
+        isLoading: false,
       };
 
     default:

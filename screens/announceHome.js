@@ -21,7 +21,6 @@ class AnnouncementHomeScreen extends React.Component {
 
   render() {
     const { announcementList, navigation } = this.props;
-    console.log(announcementList.length);
     return (
       <View style={globalStyles.container}>
         <FlatList

@@ -9,6 +9,7 @@ import AnnouncementHomeScreen from "./announceHome";
 
 import { getAnnouncementList } from "../states/announce-action";
 import course from "./course";
+import Wait from "../shared/wait";
 
 const announcementStack = createStackNavigator();
 
@@ -21,36 +22,41 @@ class AnnouncementStack extends React.Component {
     this.props.dispatch(getAnnouncementList(courseID));
   }
   render() {
-    const { announcementList } = this.props;
+    const { announcementList, isLoading } = this.props;
     const { courseID } = this.props.route.params;
-    console.log(announcementList.length, "??");
-    return (
-      <announcementStack.Navigator>
-        <announcementStack.Screen
-          name="AnnouncementHome"
-          options={{
-            headerShown: false,
-          }}
-          component={AnnouncementHomeScreen}
-        />
-        {announcementList.map((announcement) => {
-          return (
-            <announcementStack.Screen
-              key={announcement.id}
-              name={announcement.title}
-              options={{
-                headerShown: false,
-              }}
-              component={AnnouncementDetails}
-              initialParams={{ courseID: courseID, newsID: announcement.id }}
-            />
-          );
-        })}
-      </announcementStack.Navigator>
-    );
+    let children = <Wait />;
+    if (!isLoading && announcementList.length) {
+      children = (
+        <announcementStack.Navigator>
+          <announcementStack.Screen
+            name="AnnouncementHome"
+            options={{
+              headerShown: false,
+            }}
+            component={AnnouncementHomeScreen}
+          />
+          {announcementList.map((announcement) => {
+            return (
+              <announcementStack.Screen
+                key={announcement.id}
+                name={announcement.title}
+                options={{
+                  headerShown: false,
+                }}
+                component={AnnouncementDetails}
+                initialParams={{ courseID: courseID, newsID: announcement.id }}
+              />
+            );
+          })}
+        </announcementStack.Navigator>
+      );
+    }
+
+    return children;
   }
 }
 
 export default connect((state) => ({
   announcementList: state.announcementList.announcementList,
+  isLoading: state.announcementList.isLoading,
 }))(AnnouncementStack);

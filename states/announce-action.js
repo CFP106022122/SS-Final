@@ -6,53 +6,69 @@ import {
 function setAnnouncementList(announcementList) {
   return {
     type: "@announcementList/SetAnnouncementList",
-    announcementList: announcementList,
+    announcementList,
   };
 }
 
-function setAnnouncementListDone() {
+function endAnnouncementListLoading() {
   return {
-    type: "@announcementList/SetAnnouncementDone",
-    announcementListDone: true,
+    type: "@announcementList/EndLoading",
   };
 }
 
-export function startAnnouncementList() {
+function startAnnouncementListLoading() {
   return {
-    type: "@announcementList/StartAnnouncement",
-    announcementListDone: false,
+    type: "@announcementList/StartLoading",
   };
 }
 
 export function getAnnouncementList(courseID) {
   return (dispatch, getState) => {
-    if (!getState().announcementList.announcementListDone) {
-      dispatch(startAnnouncementList());
+    if (!getState().announcementList.isLoading) {
+      dispatch(startAnnouncementListLoading());
       getAnnouncementListFromApi(courseID)
         .then((announcementList) => {
-          console.log(announcementList.length, "??");
           dispatch(setAnnouncementList(announcementList));
-          dispatch(setAnnouncementListDone());
         })
-        .catch((err) => console.error(err));
-    }
+        .catch((err) => console.error(err))
+        .then(() => {
+          dispatch(endAnnouncementListLoading());
+        });
+    } else return;
   };
 }
 
 function setAnnouncementDetail(announcementDetail) {
   return {
     type: "@announcementDetail/SetAnnouncementDetail",
-    announcementDetail: announcementDetail,
+    announcementDetail,
+  };
+}
+
+function startAnnouncementDetailLoading() {
+  return {
+    type: "@announcementDetail/StartLoading",
+  };
+}
+
+function endAnnouncementDetailLoading() {
+  return {
+    type: "@announcementDetail/EndLoading",
   };
 }
 
 export function getAnnouncementDetail(courseID, newsID) {
   return (dispatch, getState) => {
-    getAnnouncementDetailFromApi(courseID, newsID)
-      .then((announcementDetail) => {
-        // console.log(announcementDetail);
-        dispatch(setAnnouncementDetail(announcementDetail));
-      })
-      .catch((err) => console.error(err));
+    if (!getState().announcementDetail.isLoading) {
+      dispatch(startAnnouncementDetailLoading());
+      getAnnouncementDetailFromApi(courseID, newsID)
+        .then((announcementDetail) => {
+          dispatch(setAnnouncementDetail(announcementDetail));
+        })
+        .catch((err) => console.error(err))
+        .then(() => {
+          dispatch(endAnnouncementDetailLoading());
+        });
+    } else return;
   };
 }
