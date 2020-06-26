@@ -8,6 +8,7 @@ import AnnouncementDetails from "./announceDetails";
 import AnnouncementHomeScreen from "./announceHome";
 
 import { getAnnouncementList } from "../states/announce-action";
+import course from "./course";
 
 const announcementStack = createStackNavigator();
 
@@ -15,12 +16,14 @@ class AnnouncementStack extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
-    this.props.dispatch(getAnnouncementList(this.props.courseID));
+  componentDidMount() {
+    const { courseID } = this.props.route.params;
+    this.props.dispatch(getAnnouncementList(courseID));
   }
   render() {
-    const { announcementList, courseID } = this.props;
-    // console.log(announcementList);
+    const { announcementList } = this.props;
+    const { courseID } = this.props.route.params;
+    console.log(announcementList.length, "??");
     return (
       <announcementStack.Navigator>
         <announcementStack.Screen
@@ -28,25 +31,21 @@ class AnnouncementStack extends React.Component {
           options={{
             headerShown: false,
           }}
-        >
-          {(props) => <AnnouncementHomeScreen {...props} courseID={courseID} />}
-        </announcementStack.Screen>
-        {announcementList.map((announcement) => (
-          <announcementStack.Screen
-            name={announcement.title}
-            options={{
-              headerShown: false,
-            }}
-          >
-            {(props) => (
-              <AnnouncementDetails
-                {...props}
-                courseID={courseID}
-                newsID={announcement.id}
-              />
-            )}
-          </announcementStack.Screen>
-        ))}
+          component={AnnouncementHomeScreen}
+        />
+        {announcementList.map((announcement) => {
+          return (
+            <announcementStack.Screen
+              key={announcement.id}
+              name={announcement.title}
+              options={{
+                headerShown: false,
+              }}
+              component={AnnouncementDetails}
+              initialParams={{ courseID: courseID, newsID: announcement.id }}
+            />
+          );
+        })}
       </announcementStack.Navigator>
     );
   }

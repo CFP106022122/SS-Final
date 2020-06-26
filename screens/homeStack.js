@@ -18,7 +18,7 @@ class HomeStack extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(getCourseList());
   }
 
@@ -35,9 +35,12 @@ class HomeStack extends React.Component {
         />
         {courseList.map((course) => {
           return (
-            <Stack.Screen name={course.name}>
-              {(props) => <CourseScreen {...props} courseID={course.id} />}
-            </Stack.Screen>
+            <Stack.Screen
+              name={course.name}
+              key={course.id}
+              initialParams={{ courseID: course.id }}
+              component={CourseScreen}
+            />
           );
         })}
         <Stack.Screen name="Curriculum" component={CurriculumScreen} />

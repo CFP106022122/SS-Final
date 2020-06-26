@@ -10,13 +10,32 @@ function setAnnouncementList(announcementList) {
   };
 }
 
+function setAnnouncementListDone() {
+  return {
+    type: "@announcementList/SetAnnouncementDone",
+    announcementListDone: true,
+  };
+}
+
+export function startAnnouncementList() {
+  return {
+    type: "@announcementList/StartAnnouncement",
+    announcementListDone: false,
+  };
+}
+
 export function getAnnouncementList(courseID) {
   return (dispatch, getState) => {
-    getAnnouncementListFromApi(courseID)
-      .then((announcementList) => {
-        dispatch(setAnnouncementList(announcementList));
-      })
-      .catch((err) => console.error(err));
+    if (!getState().announcementList.announcementListDone) {
+      dispatch(startAnnouncementList());
+      getAnnouncementListFromApi(courseID)
+        .then((announcementList) => {
+          console.log(announcementList.length, "??");
+          dispatch(setAnnouncementList(announcementList));
+          dispatch(setAnnouncementListDone());
+        })
+        .catch((err) => console.error(err));
+    }
   };
 }
 
@@ -31,6 +50,7 @@ export function getAnnouncementDetail(courseID, newsID) {
   return (dispatch, getState) => {
     getAnnouncementDetailFromApi(courseID, newsID)
       .then((announcementDetail) => {
+        // console.log(announcementDetail);
         dispatch(setAnnouncementDetail(announcementDetail));
       })
       .catch((err) => console.error(err));

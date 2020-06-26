@@ -12,34 +12,30 @@ import Card from "../shared/card";
 
 import { getAnnouncementList } from "../states/announce-action";
 import { connect } from "react-redux";
+import announceDetails from "./announceDetails";
 
 class AnnouncementHomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  // componentDidMount() {
-  //   this.props.dispatch(getAnnouncementList(this.props.courseID));
-  // }
-
   render() {
     const { announcementList, navigation } = this.props;
+    console.log(announcementList.length);
     return (
       <View style={globalStyles.container}>
         <FlatList
           data={announcementList}
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity
-                onPress={() => navigation.navigate(`${item.title}`)}
-              >
+              <TouchableOpacity onPress={() => navigation.navigate(item.title)}>
                 <Card>
                   <Text style={globalStyles.titleText}>{item.title}</Text>
                 </Card>
               </TouchableOpacity>
             );
           }}
-          keyExtractor={(item) => item.title}
+          keyExtractor={(item) => item.id}
         />
       </View>
     );

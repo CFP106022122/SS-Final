@@ -76,7 +76,7 @@ function parseAnnouncementListHelper(url) {
     .catch((err) => console.error(err));
 }
 
-export function parseAnnounceItem(courseID, newsID) {
+export function parseAnnouncementItem(courseID, newsID) {
   let attachList = [];
   let announcePack = [];
   const url = `${baseUrl}/course.php?courseID=${courseID}&f=news_show&newsID=${newsID}`;

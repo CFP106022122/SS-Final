@@ -15,14 +15,14 @@ class Course extends React.Component {
     super(props);
   }
   render() {
-    const { courseID } = this.props;
+    const { courseID } = this.props.route.params;
     return (
       <Tab.Navigator>
-        <Tab.Screen name="Announcement">
-          {(props) => (
-            <AnnouncementStackScreen {...props} courseID={courseID} />
-          )}
-        </Tab.Screen>
+        <Tab.Screen
+          name="Announcement"
+          component={AnnouncementStackScreen}
+          initialParams={{ courseID: courseID }}
+        />
         <Tab.Screen name="Material" component={MaterialStackScreen} />
         <Tab.Screen name="Homework" component={HomeworkStackScreen} />
         <Tab.Screen name="Grade" component={GradeStackScreen} />

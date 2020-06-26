@@ -25,26 +25,25 @@ class Home extends React.Component {
 
   render() {
     const { courseList, navigation } = this.props;
-    const coursesNames = courseList.map((item) => item.name);
 
     return (
       <View style={globalStyles.container}>
         <FlatList
-          data={coursesNames}
+          data={courseList}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(item);
+                  navigation.navigate(item.name);
                 }}
               >
                 <Card>
-                  <Text style={globalStyles.titleText}>{item}</Text>
+                  <Text style={globalStyles.titleText}>{item.name}</Text>
                 </Card>
               </TouchableOpacity>
             );
           }}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item.id}
         />
         <View style={styles.footer}>
           <AntDesign
