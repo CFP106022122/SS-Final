@@ -207,8 +207,129 @@ export function parseMaterialItem(courseID, materialID) {
         video: video,
         attachment: attachment,
       });
-      console.log(materialItemPack);
       return materialItemPack;
+    })
+    .catch((err) => console.error(err));
+}
+
+export function parseHomeworkList(courseID) {
+  const homeworkUrl = `${baseUrl}/course.php?courseID=${courseID}&f=hwlist`;
+  return get(homeworkUrl)
+    .then((html) => {
+      const $ = cheerio.load(html);
+      const items = $(".item", ".page");
+      const pages = items.length ? items.length - 2 + 1 : 1;
+      return pages;
+    })
+    .then((pages) => {
+      let urls = [];
+      for (let page = 1; page <= pages; page++) {
+        let url = `${baseUrl}/course.php?courseID=${courseID}&f=hwlist&page=${page}`;
+        urls.push(parseHomeworkListHelper(url));
+        return urls;
+      }
+    })
+    .then((urls) => {
+      let homeworkList = [];
+      let index = 0;
+      return Promise.all(urls)
+        .then((results) => {
+          for (let i = 0; i < results.length; ++i) {
+            for (let j = 0; j < results[i].length; ++j) {
+              homeworkList[index++] = results[i][j];
+            }
+          }
+          return homeworkList;
+        })
+        .catch((err) => console.error(err));
+    })
+    .catch((err) => console.error(err));
+}
+
+function parseHomeworkListHelper(url) {
+  let title = [];
+  let homeworkID = [];
+  let time = [];
+  let homeworklistPack = [];
+  return get(url)
+    .then((html) => {
+      const $ = cheerio.load(html);
+      const table = $(".tableBox > .table > tbody > tr");
+      table.each(function (i, elem) {
+        title[i] = $(elem).find('td[align="left"] > a').text();
+        homeworkID[i] = $(elem)
+          .find('td[align="left"]')
+          .find(" :nth-child(2)")
+          .attr("href");
+        time[i] = $(elem).find(":nth-child(5) > span").attr("title");
+      });
+      title.shift();
+      homeworkID.shift();
+      time.shift();
+
+      for (let i = 0; i < title.length; i++) {
+        time[i] = parseDate(time[i]);
+        homeworkID[i] = homeworkID[i].match(/\d+/g).map(Number)[1];
+        homeworklistPack[i] = {
+          title: title[i],
+          id: homeworkID[i],
+          time: time[i],
+        };
+      }
+      return homeworklistPack;
+    })
+    .catch((err) => console.error(err));
+}
+
+export function parseHomeworkItem(courseID, homeworkID) {
+  let attachment = [];
+  let homeworkPack = [];
+  const homeUrl = `${baseUrl}/course.php?courseID=${courseID}&f=hw&hw=${homeworkID}`;
+  return get(homeUrl)
+    .then((html) => {
+      const $ = cheerio.load(html);
+      const item = $(".infoTable > table > tbody > :nth-child(7)");
+      item.find("a").each(function (i, elem) {
+        var link = "https://lms.nthu.edu.tw" + $(this).attr("href");
+        var attachname = $(this).text();
+        attachment.push({ attachname: attachname, link: link });
+      });
+      var article = $(".infoTable > table > tbody > :nth-child(8)")
+        .find(":nth-child(2)")
+        .text();
+      homeworkPack.push({ Content: article, attachment: attachment });
+      return homeworkPack;
+    })
+    .catch((err) => console.error(err));
+}
+
+export function parseGradeList(courseID) {
+  let scoretitle = [];
+  let scores = [];
+  let scorePack = [];
+  const homeUrl = `${baseUrl}/course.php?courseID=${courseID}&f=score`;
+  return get(homeUrl)
+    .then((html) => {
+      const $ = cheerio.load(html);
+      $(".header > .td").each(function (i, elem) {
+        var scorename = $(elem).text();
+        scoretitle.push(scorename);
+      });
+
+      $("#t1_tr0 > .td").each(function (i, elem) {
+        var score = $(elem).text();
+        scores.push(score);
+      });
+
+      for (let i = 0; i < 4; i++) {
+        scoretitle.shift();
+        scores.shift();
+      }
+
+      for (let i = 0; i < scores.length; i++) {
+        scorePack.push({ title: scoretitle[i], score: scores[i] });
+      }
+      return scorePack;
     })
     .catch((err) => console.error(err));
 }

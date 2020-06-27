@@ -8,6 +8,8 @@ import {
 } from "../states/announce-reducer";
 
 import { materialList, materialDetail } from "../states/material-reducer";
+import { homeworkList, homeworkDetail } from "../states/homework-reducer";
+import { gradeList } from "../states/grade-reducer";
 
 const appReducer = {
   home,
@@ -15,6 +17,9 @@ const appReducer = {
   announcementDetail,
   materialList,
   materialDetail,
+  homeworkList,
+  homeworkDetail,
+  gradeList,
 };
 
 export const store = createStore(

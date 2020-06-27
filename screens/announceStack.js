@@ -1,6 +1,4 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { connect } from "react-redux";
 
@@ -8,7 +6,6 @@ import AnnouncementDetails from "./announceDetails";
 import AnnouncementHomeScreen from "./announceHome";
 
 import { getAnnouncementList } from "../states/announce-action";
-import course from "./course";
 import Wait from "../shared/wait";
 
 const announcementStack = createStackNavigator();

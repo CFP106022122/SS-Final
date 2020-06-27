@@ -59,9 +59,7 @@ function endMaterialDetailLoading() {
 
 export function getMaterialDetail(courseID, materialID) {
   return (dispatch, getState) => {
-    console.log(getState().materialDetail.isLoading);
     if (!getState().materialDetail.isLoading) {
-      console.log("hi~");
       dispatch(startMaterialDetailLoading());
       getMaterialDetailFromApi(courseID, materialID)
         .then((materialDetail) => {

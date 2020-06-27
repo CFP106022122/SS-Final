@@ -1,15 +1,59 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { connect } from "react-redux";
 
-export default class HomeworkStack extends React.Component {
+import HomeworkDetails from "./homeworkDetails";
+import HomeworkHomeScreen from "./homeworkHome";
+
+import { getHomeworkList } from "../states/homework-action";
+import Wait from "../shared/wait";
+
+const homeworkStack = createStackNavigator();
+
+class HomeworkStack extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    const { courseID } = this.props.route.params;
+    this.props.dispatch(getHomeworkList(courseID));
+  }
   render() {
-    return (
-      <View>
-        <Text>HomeworkStack</Text>
-      </View>
-    );
+    const { homeworkList, isLoading } = this.props;
+    const { courseID } = this.props.route.params;
+    let children = <Wait />;
+    if (!isLoading && homeworkList.length) {
+      children = (
+        <homeworkStack.Navigator>
+          <homeworkStack.Screen
+            name="HomeworkHome"
+            options={{
+              headerShown: false,
+            }}
+            component={HomeworkHomeScreen}
+          />
+          {homeworkList.map((homework) => {
+            return (
+              <homeworkStack.Screen
+                key={homework.id}
+                name={homework.title}
+                options={{
+                  headerShown: false,
+                }}
+                component={HomeworkDetails}
+                initialParams={{ courseID: courseID, homeworkID: homework.id }}
+              />
+            );
+          })}
+        </homeworkStack.Navigator>
+      );
+    }
+
+    return children;
   }
 }
+
+export default connect((state) => ({
+  homeworkList: state.homeworkList.homeworkList,
+  isLoading: state.homeworkList.isLoading,
+}))(HomeworkStack);
