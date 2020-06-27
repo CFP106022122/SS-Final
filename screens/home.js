@@ -13,30 +13,37 @@ import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 
 import { getCourseList } from "../states/home-action";
+class _ListItem extends React.PureComponent {
+  render() {
+    const { item, navigation } = this.props;
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(item.name);
+        }}
+      >
+        <Card>
+          <Text style={globalStyles.titleText}>{item.name}</Text>
+        </Card>
+      </TouchableOpacity>
+    );
+  }
+}
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
   }
+  renderItem = ({ item }) => (
+    <_ListItem item={item} navigation={this.props.navigation} />
+  );
   render() {
     const { courseList, navigation } = this.props;
     return (
       <View style={globalStyles.container}>
         <FlatList
           data={courseList}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(item.name);
-                }}
-              >
-                <Card>
-                  <Text style={globalStyles.titleText}>{item.name}</Text>
-                </Card>
-              </TouchableOpacity>
-            );
-          }}
+          renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
         />
         <View style={styles.footer}>

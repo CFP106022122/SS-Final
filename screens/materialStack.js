@@ -7,7 +7,7 @@ import MaterialHomeScreen from "./materialHome";
 
 import { getMaterialList } from "../states/material-action";
 import Wait from "../shared/wait";
-
+import Empty from "../shared/empty";
 const materialStack = createStackNavigator();
 
 class MaterialStack extends React.Component {
@@ -21,9 +21,10 @@ class MaterialStack extends React.Component {
   render() {
     const { materialList, isLoading } = this.props;
     const { courseID } = this.props.route.params;
-    let children = <Wait />;
-    if (!isLoading && materialList.length) {
-      children = (
+    if (isLoading) return <Wait />;
+    else if (!isLoading && materialList.length === 0) return <Empty />;
+    else if (!isLoading && materialList.length) {
+      return (
         <materialStack.Navigator>
           <materialStack.Screen
             name="MaterialHome"
@@ -47,9 +48,7 @@ class MaterialStack extends React.Component {
           })}
         </materialStack.Navigator>
       );
-    }
-
-    return children;
+    } else return <Empty />;
   }
 }
 

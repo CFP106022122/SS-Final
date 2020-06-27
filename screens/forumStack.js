@@ -7,6 +7,7 @@ import ForumHomeScreen from "./forumHome";
 
 import { getForumList } from "../states/forum-action";
 import Wait from "../shared/wait";
+import Empty from "../shared/empty";
 
 const forumStack = createStackNavigator();
 
@@ -21,9 +22,10 @@ class ForumStack extends React.Component {
   render() {
     const { forumList, isLoading } = this.props;
     const { courseID } = this.props.route.params;
-    let children = <Wait />;
-    if (!isLoading && forumList.length) {
-      children = (
+    if (isLoading) return <Wait />;
+    else if (!isLoading && forumList.length === 0) return <Empty />;
+    else if (!isLoading && forumList.length) {
+      return (
         <forumStack.Navigator>
           <forumStack.Screen
             name="ForumHome"
@@ -47,9 +49,7 @@ class ForumStack extends React.Component {
           })}
         </forumStack.Navigator>
       );
-    }
-
-    return children;
+    } else return <Empty />;
   }
 }
 

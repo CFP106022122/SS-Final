@@ -5,6 +5,18 @@ import { getMaterialDetail } from "../states/material-action";
 import { globalStyles } from "../styles/global";
 import Wait from "../shared/wait";
 
+class _ListItem extends React.PureComponent {
+  render() {
+    const { item } = this.props;
+    return (
+      <View>
+        <Text>{item.title}</Text>
+        <Text>{item.link}</Text>
+      </View>
+    );
+  }
+}
+
 class MaterialDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +25,7 @@ class MaterialDetails extends React.Component {
     const { courseID, materialID } = this.props.route.params;
     this.props.dispatch(getMaterialDetail(courseID, materialID));
   }
+  renderItem = ({ item }) => <_ListItem item={item} />;
   render() {
     const { materialDetail, navigation, isLoading } = this.props;
     let children = <Wait />;
@@ -25,14 +38,7 @@ class MaterialDetails extends React.Component {
           {/* <Text>{materialDetail[0].Material}</Text> */}
           <FlatList
             data={materialDetail[0].attachment}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <Text>{item.title}</Text>
-                  <Text>{item.link}</Text>
-                </View>
-              );
-            }}
+            renderItem={this.renderItem}
             keyExtractor={(item) => item.title}
           />
           <Button title="go back" onPress={() => navigation.goBack()} />

@@ -2,6 +2,7 @@ import {
   parseForumList as getForumListFromApi,
   parseForumItem as getForumDetailFromApi,
 } from "../api/parser";
+import { Platform } from "react-native";
 
 function setForumList(forumList) {
   return {

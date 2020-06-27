@@ -13,27 +13,49 @@ import Card from "../shared/card";
 import { getAnnouncementList } from "../states/announce-action";
 import { connect } from "react-redux";
 import announceDetails from "./announceDetails";
+import Empty from "../shared/empty";
+
+class _ListItem extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const { item, navigation } = this.props;
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate(item.title)}>
+        <Card>
+          <Text style={globalStyles.titleText}>{item.title}</Text>
+        </Card>
+      </TouchableOpacity>
+    );
+  }
+}
 
 class AnnouncementHomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
+  renderItem = ({ item }) => (
+    <_ListItem item={item} navigation={this.props.navigation} />
+  );
 
   render() {
     const { announcementList, navigation } = this.props;
+    if (!announcementList.length) return <Empty />;
     return (
       <View style={globalStyles.container}>
         <FlatList
           data={announcementList}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => navigation.navigate(item.title)}>
-                <Card>
-                  <Text style={globalStyles.titleText}>{item.title}</Text>
-                </Card>
-              </TouchableOpacity>
-            );
-          }}
+          // renderItem={({ item }) => {
+          //   return (
+          //     <TouchableOpacity onPress={() => navigation.navigate(item.title)}>
+          //       <Card>
+          //         <Text style={globalStyles.titleText}>{item.title}</Text>
+          //       </Card>
+          //     </TouchableOpacity>
+          //   );
+          // }}
+          renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
         />
       </View>

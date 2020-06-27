@@ -6,7 +6,21 @@ import Card from "../shared/card";
 
 import { connect } from "react-redux";
 import Wait from "../shared/wait";
+import Empty from "../shared/empty";
 import { getGradeList } from "../states/grade-action";
+
+class _ListItem extends React.PureComponent {
+  render() {
+    const { item } = this.props;
+    return (
+      <Card>
+        <Text style={globalStyles.titleText}>{item.title}</Text>
+        <Text style={globalStyles.titleText}>{item.score}</Text>
+      </Card>
+    );
+  }
+}
+
 class GradeHomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -15,28 +29,23 @@ class GradeHomeScreen extends React.Component {
     const { courseID } = this.props.route.params;
     this.props.dispatch(getGradeList(courseID));
   }
+  renderItem = ({ item }) => <_ListItem item={item} />;
 
   render() {
     const { gradeList, navigation, isLoading } = this.props;
-    let children = <Wait />;
-    if (!isLoading && gradeList.length)
-      children = (
+    if (isLoading) return <Wait />;
+    else if (!isLoading && gradeList.length === 0) return <Empty />;
+    else if (!isLoading && gradeList.length)
+      return (
         <View style={globalStyles.container}>
           <FlatList
             data={gradeList}
-            renderItem={({ item }) => {
-              return (
-                <Card>
-                  <Text style={globalStyles.titleText}>{item.title}</Text>
-                  <Text style={globalStyles.titleText}>{item.score}</Text>
-                </Card>
-              );
-            }}
+            renderItem={this.renderItem}
             keyExtractor={(item) => item.title}
           />
         </View>
       );
-    return children;
+    else return <Empty />;
   }
 }
 

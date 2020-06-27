@@ -1,4 +1,5 @@
 import { parseCourseList as getCourseListFromApi } from "../api/parser";
+import { login as loginFromApi } from "../api/login";
 
 function setCourseList(courseList) {
   return {
@@ -16,6 +17,22 @@ function startCourseListLoading() {
 function endCourseListLoading() {
   return {
     type: "@home/EndLoading",
+  };
+}
+
+function SetIsLogin() {
+  return {
+    type: "@home/SetIsLogin",
+  };
+}
+
+export function login(account, password) {
+  return (dispatch, getState) => {
+    loginFromApi(account, password)
+      .then(() => {
+        dispatch(SetIsLogin());
+      })
+      .catch((err) => console.error(err));
   };
 }
 

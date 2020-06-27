@@ -5,6 +5,18 @@ import { getHomeworkDetail } from "../states/homework-action";
 import { globalStyles } from "../styles/global";
 import Wait from "../shared/wait";
 
+class _ListItem extends React.PureComponent {
+  render() {
+    const { item } = this.props;
+    return (
+      <View>
+        <Text>{item.attachname}</Text>
+        <Text>{item.link}</Text>
+      </View>
+    );
+  }
+}
+
 class HomeworkDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +25,7 @@ class HomeworkDetails extends React.Component {
     const { courseID, homeworkID } = this.props.route.params;
     this.props.dispatch(getHomeworkDetail(courseID, homeworkID));
   }
+  renderItem = ({ item }) => <_ListItem item={item} />;
   render() {
     const { homeworkDetail, navigation, isLoading } = this.props;
     let children = <Wait />;
@@ -25,14 +38,7 @@ class HomeworkDetails extends React.Component {
           {/* <Text>{homeworkDetail[0].Homework}</Text> */}
           <FlatList
             data={homeworkDetail[0].attachment}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <Text>{item.attachname}</Text>
-                  <Text>{item.link}</Text>
-                </View>
-              );
-            }}
+            renderItem={this.renderItem}
             keyExtractor={(item) => item.attachname}
           />
           <Button title="go back" onPress={() => navigation.goBack()} />

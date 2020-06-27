@@ -5,27 +5,33 @@ import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 
 import { connect } from "react-redux";
+class _ListItem extends React.PureComponent {
+  render() {
+    const { item, navigation } = this.props;
+    return (
+      <TouchableOpacity onPress={() => navigation.navigate(item.title)}>
+        <Card>
+          <Text style={globalStyles.titleText}>{item.title}</Text>
+        </Card>
+      </TouchableOpacity>
+    );
+  }
+}
 
 class HomeworkHomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
-
+  renderItem = ({ item }) => (
+    <_ListItem item={item} navigation={this.props.navigation} />
+  );
   render() {
     const { homeworkList, navigation } = this.props;
     return (
       <View style={globalStyles.container}>
         <FlatList
           data={homeworkList}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => navigation.navigate(item.title)}>
-                <Card>
-                  <Text style={globalStyles.titleText}>{item.title}</Text>
-                </Card>
-              </TouchableOpacity>
-            );
-          }}
+          renderItem={this.renderItem}
           keyExtractor={(item) => `${item.id}`}
         />
       </View>

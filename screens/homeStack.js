@@ -9,6 +9,7 @@ import CourseScreen from "./course";
 import CurriculumScreen from "./curriculum";
 import CalendarScreen from "./calendar";
 import Header from "../shared/header";
+import Login from "./login";
 
 import { getCourseList } from "../states/home-action";
 import Wait from "../shared/wait";
@@ -18,16 +19,24 @@ class HomeStack extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    this.props.dispatch(getCourseList());
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isLogin) this.props.dispatch(getCourseList());
   }
 
   render() {
-    const { courseList, isLoading } = this.props;
+    const { courseList, isLoading, isLogin } = this.props;
     let children = <Wait />;
-    if (!isLoading && courseList.length) {
+    if (!isLogin) children = <Login />;
+    if (isLogin && !isLoading && courseList.length) {
       children = (
         <Stack.Navigator>
+          {/* <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{
+              headerTitle: () => <Header title="NTHUer" />,
+            }}
+          /> */}
           <Stack.Screen
             name="Home"
             component={HomeScreen}
@@ -57,4 +66,5 @@ class HomeStack extends React.Component {
 export default connect((state) => ({
   courseList: state.home.courseList,
   isLoading: state.home.isLoading,
+  isLogin: state.home.isLogin,
 }))(HomeStack);

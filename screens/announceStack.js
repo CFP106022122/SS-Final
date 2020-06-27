@@ -7,6 +7,7 @@ import AnnouncementHomeScreen from "./announceHome";
 
 import { getAnnouncementList } from "../states/announce-action";
 import Wait from "../shared/wait";
+import Empty from "../shared/empty";
 
 const announcementStack = createStackNavigator();
 
@@ -21,9 +22,10 @@ class AnnouncementStack extends React.Component {
   render() {
     const { announcementList, isLoading } = this.props;
     const { courseID } = this.props.route.params;
-    let children = <Wait />;
-    if (!isLoading && announcementList.length) {
-      children = (
+    if (isLoading) return <Wait />;
+    else if (!isLoading && announcementList.length === 0) return <Empty />;
+    else if (!isLoading && announcementList.length) {
+      return (
         <announcementStack.Navigator>
           <announcementStack.Screen
             name="AnnouncementHome"
@@ -47,9 +49,7 @@ class AnnouncementStack extends React.Component {
           })}
         </announcementStack.Navigator>
       );
-    }
-
-    return children;
+    } else return <Empty />;
   }
 }
 

@@ -148,6 +148,9 @@ function parseMaterialListHelper(url) {
     .then((html) => {
       const $ = cheerio.load(html);
       const table = $(".tableBox > table > tbody > tr");
+      if (table.find('.row2 > td[align="center"]')) {
+        return [];
+      }
       table.each(function (i, elem) {
         title[i] = $(elem).find('td[align="left"] > div > a').text();
         link[i] =
@@ -171,14 +174,12 @@ function parseMaterialListHelper(url) {
           time: time[i],
         });
       }
-      //   console.log(materialList);
       return materialList;
     })
     .catch((err) => console.error(err));
 }
 
 export function parseMaterialItem(courseID, materialID) {
-  console.log("hi");
   let title = [];
   let video = [];
   let attachment = [];

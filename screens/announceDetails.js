@@ -5,6 +5,18 @@ import { getAnnouncementDetail } from "../states/announce-action";
 import { globalStyles } from "../styles/global";
 import Wait from "../shared/wait";
 
+class _ListItem extends React.PureComponent {
+  render() {
+    const { item } = this.props;
+    return (
+      <View>
+        <Text>{item.name}</Text>
+        <Text>{item.downloadLink}</Text>
+      </View>
+    );
+  }
+}
+
 class AnnouncementDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -13,6 +25,7 @@ class AnnouncementDetails extends React.Component {
     const { courseID, newsID } = this.props.route.params;
     this.props.dispatch(getAnnouncementDetail(courseID, newsID));
   }
+  renderItem = ({ item }) => <_ListItem item={item} />;
   render() {
     const { announcementDetail, navigation, isLoading } = this.props;
     let children = <Wait />;
@@ -25,14 +38,7 @@ class AnnouncementDetails extends React.Component {
           <Text>{announcementDetail[0].Announcement}</Text>
           <FlatList
             data={announcementDetail[0].attatch}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <Text>{item.name}</Text>
-                  <Text>{item.downloadLink}</Text>
-                </View>
-              );
-            }}
+            renderItem={this.renderItem}
             keyExtractor={(item) => item.name}
           />
           <Button title="go back" onPress={() => navigation.goBack()} />

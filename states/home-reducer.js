@@ -1,10 +1,17 @@
 const initHomeState = {
   courseList: [],
   isLoading: false,
+  isLogin: false,
 };
 
 export function home(state = initHomeState, action) {
   switch (action.type) {
+    case "@home/SetIsLogin": {
+      return {
+        ...state,
+        isLogin: true,
+      };
+    }
     case "@home/SetCourseList":
       return {
         ...state,
