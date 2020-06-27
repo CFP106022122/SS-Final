@@ -38,7 +38,11 @@ class Course extends React.Component {
           component={GradeHomeScreen}
           initialParams={{ courseID: courseID }}
         />
-        <Tab.Screen name="Forum" component={ForumStackScreen} />
+        <Tab.Screen
+          name="Forum"
+          component={ForumStackScreen}
+          initialParams={{ courseID: courseID }}
+        />
       </Tab.Navigator>
     );
   }

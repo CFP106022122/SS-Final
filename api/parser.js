@@ -334,6 +334,93 @@ export function parseGradeList(courseID) {
     .catch((err) => console.error(err));
 }
 
+export function parseForumList(courseID) {
+  const forumUrl = `${baseUrl}/course.php?courseID=${courseID}&f=forumlist`;
+  return get(forumUrl)
+    .then((html) => {
+      const $ = cheerio.load(html);
+      const items = $(".item", ".page");
+      const pages = items.length ? items.length - 2 + 1 : 1;
+      return pages;
+    })
+    .then((pages) => {
+      let urls = [];
+      for (let page = 1; page <= pages; page++) {
+        let url = `${baseUrl}/course.php?courseID=${courseID}&&f=forumlist&page=${page}`;
+        urls.push(parseForumListHelper(url));
+      }
+      return urls;
+    })
+    .then((urls) => {
+      let forumlist = [];
+      let index = 0;
+      return Promise.all(urls)
+        .then((results) => {
+          for (let i = 0; i < results.length; ++i) {
+            for (let j = 0; j < results[i].length; ++j) {
+              forumlist[index++] = results[i][j];
+            }
+          }
+          return forumlist;
+        })
+        .catch((err) => console.error(err));
+    })
+    .catch((err) => console.error(err));
+}
+
+function parseForumListHelper(url) {
+  let postID = [];
+  let title = [];
+  let time = [];
+  let forumlistPack = [];
+  let forumlist = [];
+  return get(url)
+    .then((html) => {
+      const $ = cheerio.load(html);
+      const table = $(".tableBox > .table > tbody > tr");
+      table.each(function (i, elem) {
+        title[i] = $(elem).find('td[align="left"] > div >a > span').text();
+        postID[i] = $(elem).find('td[align="left"] > div >a > span').attr("id");
+        time[i] = $(elem).find(":nth-child(4) > div").text();
+      });
+      title.shift();
+      postID.shift();
+      time.shift();
+
+      for (let i = 0; i < title.length; i++) {
+        if (postID[i] != undefined) {
+          postID[i] = postID[i].match(/\d+/g)[0];
+        }
+
+        forumlistPack[i] = { title: title[i], id: postID[i], time: time[i] };
+      }
+
+      for (let i = 0; i < forumlistPack.length / 2; i++) {
+        forumlist.push(forumlistPack[2 * i]);
+      }
+
+      return forumlist;
+    })
+    .catch((err) => console.error(err));
+}
+
+export function parseForumItem(courseID, forumID) {
+  let postBox = [];
+  const url = `${baseUrl}/course.php?courseID=${courseID}&f=forum&tid=${forumID}`;
+  return get(url)
+    .then((html) => {
+      const $ = cheerio.load(html);
+      const postlist = $(".postBody");
+      postlist.each(function (i, elem) {
+        let postAuthor = $(elem).find(".postAuthor").text();
+        let postNote = $(elem).find(".postNote").text();
+        postBox.push({ floor: i + 1, author: postAuthor, Note: postNote });
+      });
+      return postBox;
+    })
+    .catch((err) => console.error(err));
+}
+
 function parseDate(dateStr) {
   const match = dateStr.match(/(\d+)-(\d+)-(\d+)\s+(\d+):(\d+):(\d+)/);
   return {
