@@ -85,6 +85,7 @@ export function parseAnnouncementItem(courseID, newsID) {
   const url = `${baseUrl}/course.php?courseID=${courseID}&f=news_show&newsID=${newsID}`;
   return get(url)
     .then((html) => {
+      let description = [];
       const $ = cheerio.load(html);
       const title = $(".doc > .title");
       const article = $(".article");
@@ -95,10 +96,14 @@ export function parseAnnouncementItem(courseID, newsID) {
           downloadlink: "https://lms.nthu.edu.tw" + $(elem).attr("href"),
         });
       });
+      article.find('div').each(function(i, elem){
+        description.push($(elem).text())
+      })
+      var content = description.join('\n');
 
       announcePack.push({
         title: title.text(),
-        Announcement: article.text(),
+        Announcement: content,
         attach: attachList,
       });
       return announcePack;
@@ -290,6 +295,7 @@ export function parseHomeworkItem(courseID, homeworkID) {
   const homeUrl = `${baseUrl}/course.php?courseID=${courseID}&f=hw&hw=${homeworkID}`;
   return get(homeUrl)
     .then((html) => {
+      var description = []
       const $ = cheerio.load(html);
       const item = $(".infoTable > table > tbody > :nth-child(7)");
       item.find("a").each(function (i, elem) {
@@ -299,8 +305,17 @@ export function parseHomeworkItem(courseID, homeworkID) {
       });
       var article = $(".infoTable > table > tbody > :nth-child(8)")
         .find(":nth-child(2)")
-        .text();
-      homeworkPack.push({ Content: article, attachment: attachment });
+      
+      article.find('ol > li').each(function(i, elem) {
+        description.push($(elem).text())
+      })
+
+      article.find('div').each(function(i, elem) {
+        description.push($(elem).text())
+      })
+      var content = description.join('\n');
+      console.log(content)
+      homeworkPack.push({ Content: content, attachment: attachment });
       return homeworkPack;
     })
     .catch((err) => console.error(err));
