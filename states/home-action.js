@@ -26,6 +26,12 @@ function SetIsLogin() {
   };
 }
 
+export function Logout() {
+  return {
+    type: "@home/Logout",
+  };
+}
+
 export function login(account, password) {
   return (dispatch, getState) => {
     loginFromApi(account, password)
