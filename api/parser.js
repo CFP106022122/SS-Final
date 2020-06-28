@@ -318,7 +318,7 @@ export function parseGradeList(courseID) {
         var scorename = $(elem).text();
         scoretitle.push(scorename);
       });
-
+      
       $("#t1_tr0 > .td").each(function (i, elem) {
         var score = $(elem).text();
         scores.push(score);
@@ -382,11 +382,13 @@ function parseForumListHelper(url) {
       const $ = cheerio.load(html);
       const table = $(".tableBox > .table > tbody > tr");
       const row2 = $("#main > .tableBox > table > tbody > .row2");
+      const re = /(\d+-\d+\s\d+:\d+),/;
       if (row2.length === 1 && row2.find("td").length === 1) return [];
       table.each(function (i, elem) {
         title[i] = $(elem).find('td[align="left"] > div >a > span').text();
         postID[i] = $(elem).find('td[align="left"] > div >a > span').attr("id");
-        time[i] = $(elem).find(":nth-child(4) > div").text();
+        time[i] = $(elem).find(":nth-child(4) > div").text(); //.match(re)[1];
+        // console.log($(elem).find(":nth-child(4) > div").text().match(re));
       });
       title.shift();
       postID.shift();
@@ -396,8 +398,14 @@ function parseForumListHelper(url) {
         if (postID[i] != undefined) {
           postID[i] = postID[i].match(/\d+/g)[0];
         }
-
-        forumlistPack[i] = { title: title[i], id: postID[i], time: time[i] };
+        if (!(i % 2)) {
+          time[i] = parseForumDate(time[i].match(re)[1]);
+        }
+        forumlistPack[i] = {
+          title: title[i],
+          id: postID[i],
+          time: time[i],
+        };
       }
 
       for (let i = 0; i < forumlistPack.length / 2; i++) {
@@ -411,19 +419,41 @@ function parseForumListHelper(url) {
 
 export function parseForumItem(courseID, forumID) {
   let postBox = [];
+
   const url = `${baseUrl}/course.php?courseID=${courseID}&f=forum&tid=${forumID}`;
   return get(url)
     .then((html) => {
       const $ = cheerio.load(html);
       const postlist = $(".postBody");
       postlist.each(function (i, elem) {
+        let postBody = [];
         let postAuthor = $(elem).find(".postAuthor").text();
-        let postNote = $(elem).find(".postNote").text();
-        postBox.push({ floor: i + 1, author: postAuthor, Note: postNote });
+        let postNote = $(elem).find(".postNote > div")
+        console.log($(elem).find(".postNote").text())
+        postBody.push(" ")
+        postNote.each(function(i, elem) {
+          postBody.push($(elem).text())
+        });
+        postBody.push(" ");
+        var postItem = postBody.join('\n')
+        console.log(postItem)
+        postBox.push({ floor: i + 1, author: postAuthor, Note: postItem });
       });
+      
       return postBox;
     })
     .catch((err) => console.error(err));
+}
+
+
+function parseForumDate(dateStr) {
+  const match = dateStr.match(/(\d+)-(\d+)\s+(\d+):(\d+)/);
+  return {
+    month: match[1],
+    day: match[2],
+    hour: match[3],
+    minute: match[4],
+  };
 }
 
 function parseDate(dateStr) {
@@ -437,3 +467,4 @@ function parseDate(dateStr) {
     second: match[6],
   };
 }
+
