@@ -441,20 +441,33 @@ export function parseForumItem(courseID, forumID) {
       const $ = cheerio.load(html);
       const postlist = $(".postBody");
       postlist.each(function (i, elem) {
+        let attach = [];
         let postBody = [];
         let postAuthor = $(elem).find(".postAuthor").text();
         let postNote = $(elem).find(".postNote > div")
-        console.log($(elem).find(".postNote").text())
+        let parent = $(elem).find(".postNote")
+        var firstText = parent.clone()    //clone the element
+                              .children() //select all the children
+                              .remove()   //remove all the children
+                              .end()  //again go back to selected element
+                              .text();
+        // console.log(firstText)
+
         postBody.push(" ")
+        postBody.push(firstText.replace(/\s/g,''))
+
         postNote.each(function(i, elem) {
           postBody.push($(elem).text())
+          if($(elem).find('a').length != 0) {
+            attach.push({"title": $(elem).find('a').text(), "link": `${baseUrl}`+$(elem).find('a').attr('href')})
+          }
         });
         postBody.push(" ");
         var postItem = postBody.join('\n')
-        console.log(postItem)
-        postBox.push({ floor: i + 1, author: postAuthor, Note: postItem });
-      });
-      
+        
+        postBox.push({ floor: i + 1, author: postAuthor, Note: postItem, attachment: attach });
+      }); 
+      console.log(postBox)
       return postBox;
     })
     .catch((err) => console.error(err));
