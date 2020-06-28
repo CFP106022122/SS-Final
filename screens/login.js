@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  AsyncStorage,
 } from "react-native";
 import { connect } from "react-redux";
 import { login } from "../states/home-action";
@@ -17,6 +18,16 @@ class Login extends React.Component {
       account: null,
       password: null,
     };
+  }
+
+  componentDidMount() {
+    AsyncStorage.getItem("user").then((value) => {
+      if (value) {
+        const user = JSON.parse(value);
+        const { account, password } = user;
+        this.props.dispatch(login(account, password));
+      }
+    });
   }
 
   handleSubmit = () => {

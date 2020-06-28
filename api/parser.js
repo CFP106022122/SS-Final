@@ -96,10 +96,10 @@ export function parseAnnouncementItem(courseID, newsID) {
           downloadlink: "https://lms.nthu.edu.tw" + $(elem).attr("href"),
         });
       });
-      article.find('div').each(function(i, elem){
-        description.push($(elem).text())
-      })
-      var content = description.join('\n');
+      article.find("div").each(function (i, elem) {
+        description.push($(elem).text());
+      });
+      var content = description.join("\n");
 
       announcePack.push({
         title: title.text(),
@@ -295,7 +295,7 @@ export function parseHomeworkItem(courseID, homeworkID) {
   const homeUrl = `${baseUrl}/course.php?courseID=${courseID}&f=hw&hw=${homeworkID}`;
   return get(homeUrl)
     .then((html) => {
-      var description = []
+      var description = [];
       const $ = cheerio.load(html);
       const item = $(".infoTable > table > tbody > :nth-child(7)");
       item.find("a").each(function (i, elem) {
@@ -303,18 +303,19 @@ export function parseHomeworkItem(courseID, homeworkID) {
         var attachname = $(this).text();
         attachment.push({ attachname: attachname, link: link });
       });
-      var article = $(".infoTable > table > tbody > :nth-child(8)")
-        .find(":nth-child(2)")
-      
-      article.find('ol > li').each(function(i, elem) {
-        description.push($(elem).text())
-      })
+      var article = $(".infoTable > table > tbody > :nth-child(8)").find(
+        ":nth-child(2)"
+      );
 
-      article.find('div').each(function(i, elem) {
-        description.push($(elem).text())
-      })
-      var content = description.join('\n');
-      console.log(content)
+      article.find("ol > li").each(function (i, elem) {
+        description.push($(elem).text());
+      });
+
+      article.find("div").each(function (i, elem) {
+        description.push($(elem).text());
+      });
+      var content = description.join("\n");
+      console.log(content);
       homeworkPack.push({ Content: content, attachment: attachment });
       return homeworkPack;
     })
@@ -333,7 +334,7 @@ export function parseGradeList(courseID) {
         var scorename = $(elem).text();
         scoretitle.push(scorename);
       });
-      
+
       $("#t1_tr0 > .td").each(function (i, elem) {
         var score = $(elem).text();
         scores.push(score);
@@ -402,8 +403,7 @@ function parseForumListHelper(url) {
       table.each(function (i, elem) {
         title[i] = $(elem).find('td[align="left"] > div >a > span').text();
         postID[i] = $(elem).find('td[align="left"] > div >a > span').attr("id");
-        time[i] = $(elem).find(":nth-child(4) > div").text(); //.match(re)[1];
-        // console.log($(elem).find(":nth-child(4) > div").text().match(re));
+        time[i] = $(elem).find(":nth-child(4) > div").text();
       });
       title.shift();
       postID.shift();
@@ -444,31 +444,40 @@ export function parseForumItem(courseID, forumID) {
         let attach = [];
         let postBody = [];
         let postAuthor = $(elem).find(".postAuthor").text();
-        let postNote = $(elem).find(".postNote > div")
-        
-        let parent = $(elem).find(".postNote")
-        var firstText = parent.clone()    //clone the element
-                              .children() //select all the children
-                              .remove()   //remove all the children
-                              .end()  //again go back to selected element
-                              .text();
+        let postNote = $(elem).find(".postNote > div");
+
+        let parent = $(elem).find(".postNote");
+        var firstText = parent
+          .clone() //clone the element
+          .children() //select all the children
+          .remove() //remove all the children
+          .end() //again go back to selected element
+          .text();
         // console.log(firstText)
 
-        postBody.push(" ")
-        postBody.push(firstText.replace(/\s/g,''))
+        postBody.push(" ");
+        postBody.push(firstText.replace(/\s/g, ""));
 
-        postNote.each(function(i, elem) {
-          postBody.push($(elem).text())
-          if($(elem).find('a').length != 0) {
-            attach.push({"title": $(elem).find('a').text(), "link": `${baseUrl}`+$(elem).find('a').attr('href')})
+        postNote.each(function (i, elem) {
+          postBody.push($(elem).text());
+          if ($(elem).find("a").length != 0) {
+            attach.push({
+              title: $(elem).find("a").text(),
+              link: `${baseUrl}` + $(elem).find("a").attr("href"),
+            });
           }
         });
         postBody.push(" ");
-        var postItem = postBody.join('\n')
-        
-        postBox.push({ floor: i + 1, author: postAuthor, Note: postItem, attachment: attach });
-      }); 
-      console.log(postBox)
+        var postItem = postBody.join("\n");
+
+        postBox.push({
+          floor: i + 1,
+          author: postAuthor,
+          Note: postItem,
+          attachment: attach,
+        });
+      });
+      // console.log(postBox)
       return postBox;
     })
     .catch((err) => console.error(err));
@@ -495,4 +504,3 @@ function parseDate(dateStr) {
     second: match[6],
   };
 }
-
