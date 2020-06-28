@@ -62,6 +62,8 @@ function parseAnnouncementListHelper(url) {
   return get(url)
     .then((html) => {
       let $ = cheerio.load(html);
+      const row2 = $("#main > .tableBox > table > tbody > .row2");
+      if (row2.length === 1 && row2.find("td").length === 1) return [];
       return $("#main tr")
         .filter((i) => i % 2 === 1)
         .map((i, tr) => {
@@ -148,9 +150,8 @@ function parseMaterialListHelper(url) {
     .then((html) => {
       const $ = cheerio.load(html);
       const table = $(".tableBox > table > tbody > tr");
-      if (table.find('.row2 > td[align="center"]')) {
-        return [];
-      }
+      const row2 = $("#main > .tableBox > table > tbody > .row2");
+      if (row2.length === 1 && row2.find("td").length === 1) return [];
       table.each(function (i, elem) {
         title[i] = $(elem).find('td[align="left"] > div > a').text();
         link[i] =
@@ -255,6 +256,7 @@ function parseHomeworkListHelper(url) {
   return get(url)
     .then((html) => {
       const $ = cheerio.load(html);
+      if ($("#main > .tableBox").length === 0) return [];
       const table = $(".tableBox > .table > tbody > tr");
       table.each(function (i, elem) {
         title[i] = $(elem).find('td[align="left"] > a').text();
@@ -379,6 +381,8 @@ function parseForumListHelper(url) {
     .then((html) => {
       const $ = cheerio.load(html);
       const table = $(".tableBox > .table > tbody > tr");
+      const row2 = $("#main > .tableBox > table > tbody > .row2");
+      if (row2.length === 1 && row2.find("td").length === 1) return [];
       table.each(function (i, elem) {
         title[i] = $(elem).find('td[align="left"] > div >a > span').text();
         postID[i] = $(elem).find('td[align="left"] > div >a > span').attr("id");
