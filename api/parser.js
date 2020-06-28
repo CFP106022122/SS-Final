@@ -445,7 +445,6 @@ export function parseForumItem(courseID, forumID) {
     .catch((err) => console.error(err));
 }
 
-
 function parseForumDate(dateStr) {
   const match = dateStr.match(/(\d+)-(\d+)\s+(\d+):(\d+)/);
   return {
