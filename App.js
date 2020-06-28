@@ -8,8 +8,6 @@ import { store } from "./store/store";
 
 import HomeStack from "./screens/homeStack";
 
-const Stack = createStackNavigator();
-
 function App() {
   return (
     <Provider store={store}>

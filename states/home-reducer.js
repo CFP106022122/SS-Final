@@ -12,6 +12,12 @@ export function home(state = initHomeState, action) {
         isLogin: true,
       };
     }
+    case "@home/Logout": {
+      return {
+        ...state,
+        isLogin: false,
+      };
+    }
     case "@home/SetCourseList":
       return {
         ...state,
