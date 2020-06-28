@@ -24,6 +24,9 @@ class _ListItem extends React.PureComponent {
     return (
       <TouchableOpacity onPress={() => navigation.navigate(item.title)}>
         <Card>
+          <Text>
+            {item.date.month}/{item.date.day}
+          </Text>
           <Text style={globalStyles.titleText}>{item.title}</Text>
         </Card>
       </TouchableOpacity>
