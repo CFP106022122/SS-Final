@@ -445,6 +445,7 @@ export function parseForumItem(courseID, forumID) {
         let postBody = [];
         let postAuthor = $(elem).find(".postAuthor").text();
         let postNote = $(elem).find(".postNote > div")
+        
         let parent = $(elem).find(".postNote")
         var firstText = parent.clone()    //clone the element
                               .children() //select all the children
