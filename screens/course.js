@@ -7,7 +7,7 @@ import MaterialStackScreen from "./materialStack";
 import HomeworkStackScreen from "./homeworkStack";
 import GradeHomeScreen from "./gradeHome";
 import ForumStackScreen from "./forumStack";
-
+import Ionicons from "react-native-vector-icons/Ionicons";
 const Tab = createBottomTabNavigator();
 
 class Course extends React.Component {
@@ -17,7 +17,28 @@ class Course extends React.Component {
   render() {
     const { courseID } = this.props.route.params;
     return (
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            if (route.name === "Announcement") {
+              iconName = focused
+                ? "ios-information-circle"
+                : "ios-information-circle-outline";
+            } else if (route.name === "Material") {
+              iconName = focused ? "ios-list-box" : "ios-list";
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: "tomato",
+          inactiveTintColor: "gray",
+        }}
+      >
         <Tab.Screen
           name="Announcement"
           component={AnnouncementStackScreen}
