@@ -19,6 +19,7 @@ export function parseCourseList() {
           };
         }
       });
+      // console.log(courseList);
       return courseList;
     })
     .catch((err) => console.error(err));
@@ -147,7 +148,7 @@ export function parseMaterialList(courseID) {
 
 function parseMaterialListHelper(url) {
   let materialList = [];
-  let link = [];
+  // let link = [];
   let title = [];
   let time = [];
   let materialID = [];
@@ -159,14 +160,14 @@ function parseMaterialListHelper(url) {
       if (row2.length === 1 && row2.find("td").length === 1) return [];
       table.each(function (i, elem) {
         title[i] = $(elem).find('td[align="left"] > div > a').text();
-        link[i] =
-          "https://lms.nthu.edu.tw" +
-          $(elem).find('td[align="left"] > div > a').attr("href");
+        // link[i] =
+        //   "https://lms.nthu.edu.tw" +
+        //   $(elem).find('td[align="left"] > div > a').attr("href");
         materialID[i] = $(elem).find('td[align="left"] > div > a').attr("href");
         time[i] = $(elem).find(":nth-child(6) > span").attr("title");
       });
       title.shift();
-      link.shift();
+      // link.shift();
       materialID.shift();
       time.shift();
 
@@ -175,7 +176,7 @@ function parseMaterialListHelper(url) {
         materialID[i] = materialID[i].match(/\d+/g).map(Number)[1];
         materialList.push({
           title: title[i],
-          link: link[i],
+          // link: link[i],
           id: materialID[i],
           time: time[i],
         });
@@ -315,7 +316,7 @@ export function parseHomeworkItem(courseID, homeworkID) {
         description.push($(elem).text());
       });
       var content = description.join("\n");
-      console.log(content);
+      // console.log(content);
       homeworkPack.push({ Content: content, attachment: attachment });
       return homeworkPack;
     })

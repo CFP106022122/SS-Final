@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert, AsyncStorage } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { Logout } from "../states/home-action";
@@ -20,7 +20,9 @@ class Header extends React.Component {
         },
         {
           text: "OK",
-          onPress: () => this.props.dispatch(Logout()),
+          onPress: () => {
+            this.props.dispatch(Logout());
+          },
         },
       ],
       { cancelable: false }

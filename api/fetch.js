@@ -16,3 +16,7 @@ export default function get(url) {
     .catch((err) => console.error(err));
   // } else return axios.get(url).then((res) => res.data);
 }
+
+export function post(url) {
+  return axios.post(url).then((res) => console.log(res.status));
+}

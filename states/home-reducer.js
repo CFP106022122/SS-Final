@@ -2,10 +2,24 @@ const initHomeState = {
   courseList: [],
   isLoading: false,
   isLogin: false,
+  isWrong: false,
 };
 
 export function home(state = initHomeState, action) {
   switch (action.type) {
+    case "@home/SetIsWrongOn": {
+      return {
+        ...state,
+        isWrong: true,
+      };
+    }
+    case "@home/SetIsWrongOff": {
+      return {
+        ...state,
+        isWrong: false,
+      };
+    }
+
     case "@home/SetIsLogin": {
       return {
         ...state,

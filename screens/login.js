@@ -7,9 +7,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   AsyncStorage,
+  Alert,
 } from "react-native";
 import { connect } from "react-redux";
-import { login } from "../states/home-action";
+import { login, SetIsWrongOff } from "../states/home-action";
 
 class Login extends React.Component {
   constructor(props) {
@@ -20,11 +21,28 @@ class Login extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isWrong) {
+      Alert.alert(
+        "Oops! Something Wrong = =",
+        "Maybe your account or password is incorrect",
+        [
+          {
+            text: "OK QQ",
+            onPress: () => this.props.dispatch(SetIsWrongOff()),
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  }
+
   componentDidMount() {
     AsyncStorage.getItem("user").then((value) => {
       if (value) {
         const user = JSON.parse(value);
         const { account, password } = user;
+        console.log(account, password, "???");
         this.props.dispatch(login(account, password));
       }
     });
@@ -32,6 +50,7 @@ class Login extends React.Component {
 
   handleSubmit = () => {
     const { account, password } = this.state;
+    // console.log(account, password);
     this.props.dispatch(login(account, password));
   };
 
@@ -83,4 +102,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect()(Login);
+export default connect((state) => ({
+  isWrong: state.home.isWrong,
+}))(Login);

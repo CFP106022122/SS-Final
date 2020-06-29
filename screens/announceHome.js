@@ -38,6 +38,7 @@ class AnnouncementHomeScreen extends React.Component {
   constructor(props) {
     super(props);
   }
+
   renderItem = ({ item }) => (
     <_ListItem item={item} navigation={this.props.navigation} />
   );

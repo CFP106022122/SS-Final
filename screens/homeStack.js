@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, AsyncStorage } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { connect } from "react-redux";
@@ -13,15 +13,25 @@ import Login from "./login";
 
 import { getCourseList } from "../states/home-action";
 import Wait from "../shared/wait";
+import { Value } from "react-native-reanimated";
 const Stack = createStackNavigator();
 
 class HomeStack extends React.Component {
   constructor(props) {
     super(props);
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isLogin) this.props.dispatch(getCourseList());
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.isLogin) {
+  //     AsyncStorage.getItem("courseList").then((value) => {
+  //       if (!value) {
+  //         console.log("gettttt");
+  //         this.props.dispatch(getCourseList());
+  //       } else {
+  //         console.log("ggg");
+  //       }
+  //     });
+  //   }
+  // }
 
   render() {
     const { courseList, isLoading, isLogin } = this.props;
