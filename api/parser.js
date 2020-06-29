@@ -195,14 +195,17 @@ export function parseMaterialItem(courseID, materialID) {
   return get(url)
     .then((html) => {
       const $ = cheerio.load(html);
+
       const docTitle = $(".doc > .title");
       docTitle.each(function (i, elem) {
         title.push($(elem).text());
       });
+
       const vid = $(".article > div > div > video");
       vid.each(function (i, elem) {
         video.push("https://lms.nthu.edu.tw" + $(this).attr("src"));
       });
+
       const attach = $(".attach > .block > div > :nth-child(2)");
       attach.each(function (i, elem) {
         var attachlink = "https://lms.nthu.edu.tw" + $(elem).attr("href");
@@ -210,10 +213,28 @@ export function parseMaterialItem(courseID, materialID) {
         attachment.push({ title: title, link: attachlink });
       });
 
+      const article = $(".article");
+      var articleline = []
+      // let parent = $(elem).find(".postNote");
+      var firstText = article
+          .clone() //clone the element
+          .children() //select all the children
+          .remove() //remove all the children
+          .end() //again go back to selected element
+          .text();
+
+      articleline.push(firstText.replace(/\s/g, ""));
+      article.find("div").each(function(i, elem) {
+        articleline.push($(elem).text())
+      })
+      var content = articleline.join('\n')
+      // console.log(content)
+
       materialItemPack.push({
         title: title,
         video: video,
         attachment: attachment,
+        article: content,
       });
       return materialItemPack;
     })
