@@ -1,6 +1,6 @@
 import React, { Children } from "react";
 import { connect } from "react-redux";
-import { View, Text, Button, FlatList } from "react-native";
+import { View, Text, Button, FlatList, ScrollView } from "react-native";
 import { getAnnouncementDetail } from "../states/announce-action";
 import { globalStyles } from "../styles/global";
 import Wait from "../shared/wait";
@@ -32,10 +32,19 @@ class AnnouncementDetails extends React.Component {
     if (!isLoading && announcementDetail.length) {
       children = (
         <View style={globalStyles.container}>
-          <Text style={globalStyles.titleText}>
-            {announcementDetail[0].title}
-          </Text>
-          <Text>{announcementDetail[0].Announcement}</Text>
+          <View style={globalStyles.detailTitle}>
+            <Text style={globalStyles.titleText}>
+              {announcementDetail[0].title}
+            </Text>
+          </View>
+          <ScrollView>
+            <View style={globalStyles.detailBox}>
+              <Text style={globalStyles.detailText}>
+                {announcementDetail[0].Announcement}
+              </Text>
+            </View>
+          </ScrollView>
+
           <FlatList
             data={announcementDetail[0].attatch}
             renderItem={this.renderItem}
