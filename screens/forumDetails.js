@@ -28,7 +28,7 @@ class ForumDetails extends React.Component {
   renderItem = ({ item }) => <_ListItem item={item} />;
   render() {
     const { forumDetail, navigation, isLoading } = this.props;
-    let children = <Wait />;
+    let children = <Wait />
     if (!isLoading && forumDetail.length) {
       children = (
         <View style={globalStyles.container}>
@@ -36,6 +36,7 @@ class ForumDetails extends React.Component {
           <Text style={globalStyles.titleText}>{forumDetail[0].author}</Text> */}
           {/* <Text>{forumDetail[0].Forum}</Text> */}
           <FlatList
+            style={globalStyles.detailBox}
             data={forumDetail}
             renderItem={this.renderItem}
             keyExtractor={(item) => `${item.floor}`}

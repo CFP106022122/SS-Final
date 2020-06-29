@@ -84,7 +84,7 @@ class Login extends React.Component {
             }}
             secureTextEntry
           />
-          <Button title="Login" onPress={this.handleSubmit} />
+          <Button title="Login" onPress={this.handleSubmit} marginTop = {30} />
         </View>
       </TouchableWithoutFeedback>
     );

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image, } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +16,11 @@ export default class Empty extends React.Component {
   render() {
     return (
       <View style = {styles.container}>
-        <Text>No Data</Text>
+        <Text >No Data Available</Text>
+        <Image
+            source={require('../img/nodata-bg.png')}
+            marginTop = {20}
+        />
       </View>
     );
   }
