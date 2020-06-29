@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { View, Text, Button, FlatList } from "react-native";
+import { View, Text, Button, FlatList, ScrollView } from "react-native";
 import { getHomeworkDetail } from "../states/homework-action";
 import { globalStyles } from "../styles/global";
 import Wait from "../shared/wait";
@@ -32,9 +32,14 @@ class HomeworkDetails extends React.Component {
     if (!isLoading && homeworkDetail.length) {
       children = (
         <View style={globalStyles.container}>
-          <Text style={globalStyles.titleText}>
-            {homeworkDetail[0].Content}
-          </Text>
+          {/* Need Title ? */}
+          <ScrollView>
+            <View style={globalStyles.detailBox}>
+              <Text style={globalStyles.detailText}>
+                {homeworkDetail[0].Content}
+              </Text>
+            </View>
+          </ScrollView>
           {/* <Text>{homeworkDetail[0].Homework}</Text> */}
           <FlatList
             data={homeworkDetail[0].attachment}

@@ -70,7 +70,6 @@ export function login(account, password) {
             dispatch(SetIsLogin());
             dispatch(setCourseList(courseList));
             AsyncStorage.setItem("user", JSON.stringify({ account, password }));
-            AsyncStorage.setItem("courseList", JSON.stringify(courseList));
           })
           .catch((err) => {
             console.log(err);
@@ -82,17 +81,17 @@ export function login(account, password) {
   };
 }
 
-export function getCourseList() {
-  return (dispatch, getState) => {
-    if (!getState().home.isLoading) {
-      dispatch(startCourseListLoading());
-      getCourseListFromApi()
-        .then((courseList) => {
-          dispatch(setCourseList(courseList));
-          AsyncStorage.setItem("courseList", JSON.stringify(courseList));
-        })
-        .catch((err) => console.error(err))
-        .then(() => dispatch(endCourseListLoading()));
-    }
-  };
-}
+// export function getCourseList() {
+//   return (dispatch, getState) => {
+//     if (!getState().home.isLoading) {
+//       dispatch(startCourseListLoading());
+//       getCourseListFromApi()
+//         .then((courseList) => {
+//           dispatch(setCourseList(courseList));
+//           AsyncStorage.setItem("courseList", JSON.stringify(courseList));
+//         })
+//         .catch((err) => console.error(err))
+//         .then(() => dispatch(endCourseListLoading()));
+//     }
+//   };
+// }

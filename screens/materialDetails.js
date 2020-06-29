@@ -8,6 +8,7 @@ import Wait from "../shared/wait";
 class _ListItem extends React.PureComponent {
   render() {
     const { item } = this.props;
+    //todo link
     return (
       <View>
         <Text>{item.title}</Text>
@@ -32,10 +33,12 @@ class MaterialDetails extends React.Component {
     if (!isLoading && materialDetail.length) {
       children = (
         <View style={globalStyles.container}>
-          <Text style={globalStyles.titleText}>
-            {materialDetail[0].title[0]}
-          </Text>
-          {/* <Text>{materialDetail[0].Material}</Text> */}
+          <View style={globalStyles.detailTitle}>
+            <Text style={globalStyles.titleText}>
+              {materialDetail[0].title[0]}
+            </Text>
+          </View>
+          {/* NEED DESCRIPTION HERE */}
           <FlatList
             data={materialDetail[0].attachment}
             renderItem={this.renderItem}
