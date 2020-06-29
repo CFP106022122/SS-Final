@@ -1,17 +1,24 @@
 import React, { Children } from "react";
 import { connect } from "react-redux";
-import { View, Text, Button, FlatList, ScrollView } from "react-native";
+import { View, Text, Button, FlatList, ScrollView, TouchableOpacity, Linking } from "react-native";
 import { getAnnouncementDetail } from "../states/announce-action";
 import { globalStyles } from "../styles/global";
 import Loader from "../shared/loader";
 
+
 class _ListItem extends React.PureComponent {
+  
+  handleSubmit(link) {
+    Linking.openURL(`${link}`)
+  }
+
   render() {
     const { item } = this.props;
     return (
       <View>
-        <Text>{item.name}</Text>
-        <Text>{item.downloadLink}</Text>
+        <TouchableOpacity onPress = {() => { this.handleSubmit(item.downloadlink)}}>
+          <Text >{item.name}</Text>
+        </TouchableOpacity >
       </View>
     );
   }
