@@ -5,7 +5,7 @@ import { globalStyles } from "../styles/global";
 import Card from "../shared/card";
 
 import { connect } from "react-redux";
-import Wait from "../shared/wait";
+import Loader from "../shared/loader";
 import Empty from "../shared/empty";
 import { getGradeList } from "../states/grade-action";
 
@@ -33,7 +33,7 @@ class GradeHomeScreen extends React.Component {
 
   render() {
     const { gradeList, navigation, isLoading } = this.props;
-    if (isLoading) return <Wait />;
+    if (isLoading) return <Loader />;
     else if (!isLoading && gradeList.length === 0) return <Empty />;
     else if (!isLoading && gradeList.length)
       return (

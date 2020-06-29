@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { View, Text, Button, FlatList, ScrollView } from "react-native";
 import { getAnnouncementDetail } from "../states/announce-action";
 import { globalStyles } from "../styles/global";
-import Wait from "../shared/wait";
+import Loader from "../shared/loader";
 
 class _ListItem extends React.PureComponent {
   render() {
@@ -28,7 +28,7 @@ class AnnouncementDetails extends React.Component {
   renderItem = ({ item }) => <_ListItem item={item} />;
   render() {
     const { announcementDetail, navigation, isLoading } = this.props;
-    let children = <Wait />;
+    let children = <Loader />;
     if (!isLoading && announcementDetail.length) {
       children = (
         <View style={globalStyles.container}>

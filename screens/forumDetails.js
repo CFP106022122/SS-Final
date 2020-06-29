@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { View, Text, Button, FlatList } from "react-native";
 import { getForumDetail } from "../states/forum-action";
 import { globalStyles } from "../styles/global";
-import Wait from "../shared/wait";
+import Loader from "../shared/loader";
 
 class _ListItem extends React.PureComponent {
   render() {
@@ -28,7 +28,7 @@ class ForumDetails extends React.Component {
   renderItem = ({ item }) => <_ListItem item={item} />;
   render() {
     const { forumDetail, navigation, isLoading } = this.props;
-    let children = <Wait />
+    let children = <Loader />;
     if (!isLoading && forumDetail.length) {
       children = (
         <View style={globalStyles.container}>

@@ -28,6 +28,12 @@ class Course extends React.Component {
                 : "ios-information-circle-outline";
             } else if (route.name === "Material") {
               iconName = focused ? "ios-list-box" : "ios-list";
+            } else if (route.name === "Homework") {
+              iconName = "ios-beaker";
+            } else if (route.name === "Grade") {
+              iconName = "ios-beer";
+            } else if (route.name === "Forum") {
+              iconName = focused ? "ios-people" : "ios-person";
             }
 
             // You can return any component that you like here!
