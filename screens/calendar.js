@@ -6,7 +6,16 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
+  Image,
 } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent:'center',
+    alignItems: 'center'
+  },
+});
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -14,9 +23,17 @@ class Calendar extends React.Component {
   }
   render() {
     return (
-      <View>
-        <Text>Calendar</Text>
-      </View>
+      <View style = {styles.container}>
+        <Image
+            source={require('../img/sad-ghost.png')}
+          />
+        <Text >
+          {"\n"}We're Sorry :(
+        </Text>
+        <Text>
+          {"\n"}Calender Currently Unavailable Yet
+        </Text>
+    </View>
     );
   }
 }
