@@ -6,7 +6,7 @@ import ForumDetails from "./forumDetails";
 import ForumHomeScreen from "./forumHome";
 
 import { getForumList } from "../states/forum-action";
-import Wait from "../shared/wait";
+import Loader from "../shared/loader";
 import Empty from "../shared/empty";
 
 const forumStack = createStackNavigator();
@@ -22,7 +22,7 @@ class ForumStack extends React.Component {
   render() {
     const { forumList, isLoading } = this.props;
     const { courseID } = this.props.route.params;
-    if (isLoading) return <Wait />;
+    if (isLoading) return <Loader />;
     else if (!isLoading && forumList.length === 0) return <Empty />;
     else if (!isLoading && forumList.length) {
       return (

@@ -6,7 +6,7 @@ import HomeworkDetails from "./homeworkDetails";
 import HomeworkHomeScreen from "./homeworkHome";
 
 import { getHomeworkList } from "../states/homework-action";
-import Wait from "../shared/wait";
+import Loader from "../shared/loader";
 import Empty from "../shared/empty";
 
 const homeworkStack = createStackNavigator();
@@ -22,7 +22,7 @@ class HomeworkStack extends React.Component {
   render() {
     const { homeworkList, isLoading } = this.props;
     const { courseID } = this.props.route.params;
-    if (isLoading) return <Wait />;
+    if (isLoading) return <Loader />;
     else if (!isLoading && homeworkList.length === 0) return <Empty />;
     else if (!isLoading && homeworkList.length) {
       return (

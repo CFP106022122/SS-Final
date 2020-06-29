@@ -12,7 +12,7 @@ import Header from "../shared/header";
 import Login from "./login";
 
 import { getCourseList } from "../states/home-action";
-import Wait from "../shared/wait";
+import Loader from "../shared/loader";
 import { Value } from "react-native-reanimated";
 const Stack = createStackNavigator();
 
@@ -35,7 +35,7 @@ class HomeStack extends React.Component {
 
   render() {
     const { courseList, isLoading, isLogin } = this.props;
-    let children = <Wait />;
+    let children = <Loader />;
     if (!isLogin) children = <Login />;
     if (isLogin && !isLoading && courseList.length) {
       children = (

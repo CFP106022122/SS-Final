@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { View, Text, Button, FlatList, TouchableOpacity, Linking } from "react-native";
 import { getMaterialDetail } from "../states/material-action";
 import { globalStyles } from "../styles/global";
-import Wait from "../shared/wait";
+import Loader from "../shared/loader";
 
 
 class _ListItem extends React.PureComponent {
@@ -35,7 +35,7 @@ class MaterialDetails extends React.Component {
   renderItem = ({ item }) => <_ListItem item={item} />;
   render() {
     const { materialDetail, navigation, isLoading } = this.props;
-    let children = <Wait />;
+    let children = <Loader />;
     if (!isLoading && materialDetail.length) {
       children = (
         <View style={globalStyles.container}>

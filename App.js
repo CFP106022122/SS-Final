@@ -7,7 +7,6 @@ import { Provider, connect } from "react-redux";
 import { store } from "./store/store";
 
 import HomeStack from "./screens/homeStack";
-
 function App() {
   return (
     <Provider store={store}>
