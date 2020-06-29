@@ -8,6 +8,7 @@ import {
   Keyboard,
   AsyncStorage,
   Alert,
+  Image,
 } from "react-native";
 import { connect } from "react-redux";
 import { login, SetIsWrongOff } from "../states/home-action";
@@ -24,7 +25,7 @@ class Login extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.isWrong) {
       Alert.alert(
-        "Oops! Something Wrong = =",
+        "Oops! Something went Wrong = =",
         "Maybe your account or password is incorrect",
         [
           {
@@ -62,6 +63,10 @@ class Login extends React.Component {
         }}
       >
         <View style={styles.container}>
+          <Image
+            style={styles.tinyLogo}
+            source={require('../img/logo.png')}
+          />
           <TextInput
             placeholder="Account"
             style={styles.input}
