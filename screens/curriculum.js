@@ -32,7 +32,7 @@ class Curriculum extends React.Component {
           {"\n"}We're Sorry :(
         </Text>
         <Text>
-          {"\n"}Curriculum Currently Unavailable Yet
+          {"\n"}Curriculum Is Currently Unavailable
         </Text>
       </View>
     );

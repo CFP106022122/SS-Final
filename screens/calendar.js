@@ -31,7 +31,7 @@ class Calendar extends React.Component {
           {"\n"}We're Sorry :(
         </Text>
         <Text>
-          {"\n"}Calender Currently Unavailable Yet
+          {"\n"}Calender Is Currently Unavailable 
         </Text>
     </View>
     );
