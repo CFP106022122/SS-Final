@@ -1,6 +1,6 @@
 import React, { Children } from "react";
 import { connect } from "react-redux";
-import { View, Text, Button, FlatList, TouchableOpacity, Linking } from "react-native";
+import { View, Text, Button, FlatList, TouchableOpacity,TouchableHighlight,  Linking } from "react-native";
 import { getMaterialDetail } from "../states/material-action";
 import { globalStyles } from "../styles/global";
 import Loader from "../shared/loader";
@@ -17,7 +17,7 @@ class _ListItem extends React.PureComponent {
     return (
       <View>
         <TouchableOpacity onPress = {() => { this.handleSubmit(item.link)}}>
-          <Text color = '#147efb'>{item.title}</Text>
+          <Text style={{color: "#147efb" }}>{item.title}</Text>
         </TouchableOpacity >
       </View>
     );

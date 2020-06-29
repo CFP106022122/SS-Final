@@ -16,7 +16,7 @@ class _ListItem extends React.PureComponent {
     return (
       <View>
         <TouchableOpacity onPress = {() => { this.handleSubmit(item.link)}}>
-          <Text color = '#147efb'>{item.attachname}</Text>
+          <Text style={{color: "#147efb"}}>{item.attachname}</Text>
         </TouchableOpacity >
       </View>
     );
