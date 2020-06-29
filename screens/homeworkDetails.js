@@ -1,21 +1,29 @@
 import React from "react";
 import { connect } from "react-redux";
-import { View, Text, Button, FlatList, ScrollView } from "react-native";
+import { View, Text, Button, FlatList, ScrollView, Linking, TouchableOpacity } from "react-native";
 import { getHomeworkDetail } from "../states/homework-action";
 import { globalStyles } from "../styles/global";
 import Wait from "../shared/wait";
 
 class _ListItem extends React.PureComponent {
+  
+  handleSubmit(link) {
+    Linking.openURL(`${link}`)
+  }
+
   render() {
     const { item } = this.props;
     return (
       <View>
-        <Text>{item.attachname}</Text>
-        <Text>{item.link}</Text>
+        <TouchableOpacity onPress = {() => { this.handleSubmit(item.link)}}>
+          <Text >{item.attachname}</Text>
+        </TouchableOpacity >
       </View>
     );
   }
 }
+
+
 
 class HomeworkDetails extends React.Component {
   constructor(props) {
